@@ -9,7 +9,19 @@ const port = 1313
 
 app.use(cors(), bodyParser.urlencoded({ extended: true }), bodyParser.json())
 
-app.get('/tasks', (req, res) => res.json({ tasks: ['task 1', 'task 2', 'task 3'] }))
+app.get('/tasks', async (request, response) => {
+  try {
+    const db = await connectDB()
+    const collection = db.collection('tasks')
+    collection.find({}).toArray((err, tasks) => {
+      if (err) response.status(400).send()
+      response.json(tasks)
+    })
+  } catch (e) {
+    console.error(`Server Error: ${e}`)
+    response.status(500).send()
+  }
+})
 app.post('/tasks', async (request, response) => {
   const { task } = request.body
   try {
