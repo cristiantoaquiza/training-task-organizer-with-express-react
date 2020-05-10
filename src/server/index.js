@@ -22,8 +22,9 @@ app.get('/tasks', async (request, response) => {
     response.status(500).send()
   }
 })
+
 app.post('/tasks', async (request, response) => {
-  const { task } = request.body
+  const task = request.body
   try {
     const db = await connectDB()
     const collection = db.collection('tasks')
@@ -34,6 +35,7 @@ app.post('/tasks', async (request, response) => {
     response.status(500).send()
   }
 })
+
 app.put('/tasks/:taskId', async (request, response) => {
   const { title, completed } = request.body
   const { taskId } = request.params
@@ -52,4 +54,5 @@ app.put('/tasks/:taskId', async (request, response) => {
     response.status(500).send()
   }
 })
+
 app.listen(port)
