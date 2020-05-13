@@ -1,12 +1,15 @@
 import React, { useContext } from 'react'
-import OrganizerContext from '../store/context'
+import TaskOrganizerContext from '../store/context'
+import TaskForm from './TaskForm'
 
 const Dashboard = () => {
   const {
     state: { tasks }
-  } = useContext(OrganizerContext)
+  } = useContext(TaskOrganizerContext)
+
   return (
     <section className="container mx-auto max-w-md text-center font-mono">
+      <TaskForm />
       <h1 className="text-bold">{tasks.length} Tasks</h1>
       <ul className="list-reset text-white p-0">
         {tasks.map((task) => (
