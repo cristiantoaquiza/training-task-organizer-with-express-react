@@ -1,12 +1,16 @@
 import { useState, useEffect } from 'react'
 
-const useAPI = (url) => {
+const useAPI = (url, options = {}) => {
   const [data, setData] = useState([])
 
   const getData = async () => {
-    const response = await fetch(url)
-    const data = await response.json()
-    setData(data)
+    try {
+      const response = await fetch(url, options)
+      const data = await response.json()
+      setData(data)
+    } catch (error) {
+      console.error(error)
+    }
   }
 
   useEffect(() => {
