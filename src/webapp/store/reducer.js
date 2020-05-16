@@ -1,8 +1,8 @@
-import { GET_TASKS, ADD_TASK } from './actions'
+import { SET_TASKS, ADD_TASK } from './actions'
 
 const reducer = (state, action) => {
   switch (action.type) {
-    case GET_TASKS:
+    case SET_TASKS:
       return {
         ...state,
         tasks: action.payload
@@ -12,11 +12,7 @@ const reducer = (state, action) => {
         ...state,
         tasks: [
           ...state.tasks,
-          {
-            _id: Math.floor(Math.random() * Math.floor(100)),
-            text: action.payload,
-            completed: false
-          }
+          action.payload
         ]
       }
     default:

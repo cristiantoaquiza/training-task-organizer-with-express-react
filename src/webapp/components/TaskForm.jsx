@@ -6,9 +6,18 @@ const TaskForm = () => {
   const [taskText, setTaskText] = useState('')
   const { dispatch } = useContext(TaskOrganizerContext)
 
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     event.preventDefault()
-    dispatch(addTask(taskText))
+    const response = await fetch('http://localhost:1313/tasks', {
+      headers: {
+        Accept: 'application/json',
+        'Content-Type': 'application/json'
+      },
+      method: 'POST',
+      body: JSON.stringify({ text: taskText, completed: false })
+    })
+    const data = response.json()
+    dispatch(addTask(data))
   }
 
   return (

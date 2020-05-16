@@ -2,17 +2,21 @@ import React, { useContext, useReducer, useEffect } from 'react'
 import TaskOrganizerContext from '../store/context'
 import reducer from '../store/reducer'
 import Dashboard from './Dashboard'
-import useAPI from '../hooks/useAPI'
-import { getTasks } from '../store/actions'
+import { setTasks } from '../store/actions'
 
 const App = () => {
   const initialState = useContext(TaskOrganizerContext)
   const [state, dispatch] = useReducer(reducer, initialState)
-  const savedTasks = useAPI('http://localhost:1313/tasks')
+
+  const setTasksFromAPI = async () => {
+    const response = await fetch('http://localhost:1313/tasks')
+    const data = await response.json()
+    dispatch(setTasks(data))
+  }
 
   useEffect(() => {
-    dispatch(getTasks(savedTasks))
-  }, [savedTasks])
+    setTasksFromAPI()
+  }, [])
 
   return (
     <TaskOrganizerContext.Provider value={{ state, dispatch }}>
