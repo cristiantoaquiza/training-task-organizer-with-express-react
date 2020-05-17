@@ -1,4 +1,4 @@
-import { SET_TASKS, ADD_TASK } from './actions'
+import { SET_TASKS, ADD_TASK, DELETE_TASK } from './actions'
 
 const reducer = (state, action) => {
   switch (action.type) {
@@ -10,10 +10,12 @@ const reducer = (state, action) => {
     case ADD_TASK:
       return {
         ...state,
-        tasks: [
-          ...state.tasks,
-          action.payload
-        ]
+        tasks: [...state.tasks, action.payload]
+      }
+    case DELETE_TASK:
+      return {
+        ...state,
+        tasks: state.tasks.filter((task) => task._id !== action.payload)
       }
     default:
       return state
