@@ -1,23 +1,30 @@
-import React, { useContext, useState } from 'react'
+import React, { useContext, useState, useEffect } from 'react'
 import TaskOrganizerContext from '../store/context'
-import { addTask } from '../store/actions'
+import { addTask, updateTask } from '../store/actions'
+import { postTask, putTask } from '../apiClient'
 
 const TaskForm = () => {
   const [taskText, setTaskText] = useState('')
-  const { dispatch } = useContext(TaskOrganizerContext)
+  const {
+    state: { selectedTask },
+    dispatch
+  } = useContext(TaskOrganizerContext)
+
+  useEffect(() => {
+    if (selectedTask.text) setTaskText(selectedTask.text)
+  }, [selectedTask])
 
   const handleSubmit = async () => {
     event.preventDefault()
-    const response = await fetch('http://localhost:1313/tasks', {
-      headers: {
-        Accept: 'application/json',
-        'Content-Type': 'application/json'
-      },
-      method: 'POST',
-      body: JSON.stringify({ text: taskText, completed: false })
-    })
-    const data = await response.json()
-    dispatch(addTask(data))
+    if (selectedTask.text) {
+      const updatedText = { text: taskText }
+      await putTask(selectedTask._id, updatedText)
+      dispatch(updateTask(updatedText))
+    } else {
+      const data = await postTask({ text: taskText, completed: false })
+      dispatch(addTask(data))
+    }
+    setTaskText('')
   }
 
   return (
@@ -33,3 +40,4 @@ const TaskForm = () => {
 }
 
 export default TaskForm
+  
