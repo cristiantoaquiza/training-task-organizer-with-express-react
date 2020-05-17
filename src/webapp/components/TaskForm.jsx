@@ -16,7 +16,7 @@ const TaskForm = () => {
       method: 'POST',
       body: JSON.stringify({ text: taskText, completed: false })
     })
-    const data = response.json()
+    const data = await response.json()
     dispatch(addTask(data))
   }
 
