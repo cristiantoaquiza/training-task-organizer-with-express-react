@@ -1,6 +1,6 @@
 import React, { useContext, useState, useEffect } from 'react'
 import TaskOrganizerContext from '../store/context'
-import { addTask, updateTask } from '../store/actions'
+import { addTask, setSelectedTask, updateTask } from '../store/actions'
 import { postTask, putTask } from '../apiClient'
 
 const TaskForm = () => {
@@ -19,12 +19,14 @@ const TaskForm = () => {
     if (selectedTask.text) {
       const updatedText = { text: taskText }
       await putTask(selectedTask._id, updatedText)
-      dispatch(updateTask(updatedText))
+      const updatedTask = { ...selectedTask, ...updatedText }
+      dispatch(updateTask(updatedTask))
     } else {
       const data = await postTask({ text: taskText, completed: false })
       dispatch(addTask(data))
     }
     setTaskText('')
+    dispatch(setSelectedTask({}))
   }
 
   return (
@@ -40,4 +42,3 @@ const TaskForm = () => {
 }
 
 export default TaskForm
-  

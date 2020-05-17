@@ -4,13 +4,14 @@ import TaskOrganizerContext from '../store/context'
 
 const TaskList = () => {
   const {
-    state: { tasks }, dispatch
+    state: { tasks },
+    dispatch
   } = useContext(TaskOrganizerContext)
 
   return (
     <section>
       <h1 className="text-bold">{tasks.length} Tasks</h1>
-      <ul className="list-reset text-white p-0">
+      <ul className="list-reset p-0">
         {tasks.map((task) => (
           <li
             className="flex items-center bg-orange-700 border-black border-dashed border-2 my-2 py-4"

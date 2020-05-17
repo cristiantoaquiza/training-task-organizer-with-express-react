@@ -21,7 +21,7 @@ const reducer = (state, action) => {
       return { ...state, selectedTask: action.payload }
     case UPDATE_TASK: {
       const updatedIndex = state.tasks.findIndex(
-        (task) => task._id === state.selectedTask._id
+        (task) => task._id === action.payload._id
       )
       return {
         ...state,

@@ -1,10 +1,10 @@
 import React from 'react'
 import PropTypes from 'prop-types'
-import { removeTask, setSelectedTask } from '../store/actions'
-import { deleteTask } from '../apiClient'
+import { removeTask, setSelectedTask, updateTask } from '../store/actions'
+import { deleteTask, putTask } from '../apiClient'
 
 const Task = ({ task, dispatch }) => {
-  const { _id, text } = task
+  const { _id, text, completed } = task
 
   const handleDelete = async () => {
     await deleteTask(_id)
@@ -15,9 +15,23 @@ const Task = ({ task, dispatch }) => {
     dispatch(setSelectedTask(task))
   }
 
+  const handleDobleClick = async () => {
+    const updatedCompleted = { completed: !completed }
+    await putTask(_id, updatedCompleted)
+    const updatedTask = { ...task, ...updatedCompleted }
+    dispatch(updateTask(updatedTask))
+  }
+
   return (
     <>
-      <span className="flex-1 cursor-pointer">{text}</span>
+      <span
+        onDoubleClick={handleDobleClick}
+        className={`flex-1 cursor-pointer ${
+          completed ? 'line-through text-gray-800' : 'text-white'
+        }`}
+      >
+        {text}
+      </span>
       <button onClick={handleEdit}>
         <img
           src="https://icon.now.sh/edit/0050c5"

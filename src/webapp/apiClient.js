@@ -1,5 +1,11 @@
 const TASK_API_URL = 'http://localhost:1313/tasks'
 
+export const getTasks = async () => {
+  const response = await fetch('http://localhost:1313/tasks')
+  const data = await response.json()
+  return data
+}
+
 export const postTask = async (task) => {
   const response = await fetch(TASK_API_URL, {
     headers: {
