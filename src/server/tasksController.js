@@ -35,11 +35,24 @@ export const updateTask = async (request, response) => {
     const db = await connectDB()
     const collection = db.collection('tasks')
     if (title) {
-      collection.updateOne({ _id: ObjectId(taskId) }, { $set: { title } })
+      await collection.updateOne({ _id: ObjectId(taskId) }, { $set: { title } })
     }
     if (completed) {
-      collection.updateOne({ _id: ObjectId(taskId) }, { $set: { completed } })
+      await collection.updateOne({ _id: ObjectId(taskId) }, { $set: { completed } })
     }
+    response.status(200).send()
+  } catch (e) {
+    console.error(`Server Error: ${e}`)
+    response.status(500).send()
+  }
+}
+
+export const deleteTask = async (request, response) => {
+  const { taskId } = request.params
+  try {
+    const db = await connectDB()
+    const collection = db.collection('tasks')
+    await collection.deleteOne({ _id: ObjectId(taskId) })
     response.status(200).send()
   } catch (e) {
     console.error(`Server Error: ${e}`)
