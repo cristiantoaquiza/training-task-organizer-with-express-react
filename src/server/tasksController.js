@@ -20,8 +20,8 @@ export const addTask = async (request, response) => {
   try {
     const db = await connectDB()
     const collection = db.collection('tasks')
-    await collection.insertOne(task)
-    response.status(200).send()
+    const inserted = await collection.insertOne(task)
+    response.json(inserted.ops[0])
   } catch (e) {
     console.error(`Server Error: ${e}`)
     response.status(500).send()
