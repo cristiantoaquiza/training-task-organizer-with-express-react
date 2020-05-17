@@ -29,16 +29,19 @@ export const addTask = async (request, response) => {
 }
 
 export const updateTask = async (request, response) => {
-  const { title, completed } = request.body
+  const { text, completed } = request.body
   const { taskId } = request.params
   try {
     const db = await connectDB()
     const collection = db.collection('tasks')
-    if (title) {
-      await collection.updateOne({ _id: ObjectId(taskId) }, { $set: { title } })
+    if (text) {
+      await collection.updateOne({ _id: ObjectId(taskId) }, { $set: { text } })
     }
     if (completed) {
-      await collection.updateOne({ _id: ObjectId(taskId) }, { $set: { completed } })
+      await collection.updateOne(
+        { _id: ObjectId(taskId) },
+        { $set: { completed } }
+      )
     }
     response.status(200).send()
   } catch (e) {
